@@ -1,4 +1,4 @@
-# News
+# News [![Build Status](https://travis-ci.org/yorkLiu/News.svg?branch=master)](https://travis-ci.org/yorkLiu/News)
 > 获取IT信息
 
 ## NEWS 来源
