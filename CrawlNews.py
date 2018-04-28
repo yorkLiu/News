@@ -14,12 +14,15 @@ sys.setdefaultencoding("utf8")
 DATE_FORMAT_1='%Y-%m-%d'
 DATE_FORMAT_2='%m.%d.%Y'
 
-DATE_FORMATTER = {
-    'CSDN': DATE_FORMAT_1,
-    'jianshu': DATE_FORMAT_1
-}
+TIME_FORMAT='%H:%M:%S'
+
+# DATE_FORMATTER = {
+#     'CSDN': DATE_FORMAT_1,
+#     'jianshu': DATE_FORMAT_1
+# }
 
 today = datetime.now().strftime(DATE_FORMAT_1)
+today_date_time =  datetime.now().strftime('%s %s' % (DATE_FORMAT_1, TIME_FORMAT))
 
 
 def crawl_news():
@@ -73,27 +76,73 @@ def crawl_news():
 
     return news
 
-
-def write_news_with_markdown(news):
+def create_markdown_content(news):
     if len(news) == 0:
         print 'No news info need write'
         return
 
-    tpl_article_title="# {category_title}\n"
-    tpl_article_content=' ## [{title}]({url})\n > {description}\n'
-
+    tpl_article_title = "# {category_title}\n"
+    tpl_article_content = ' ## [{title}]({url})\n > {description}\n'
 
     title = '%s IT News' % today
     article_title = tpl_article_title.format(category_title=title)
-    article_content=""
+    article_content = ""
     for c in news:
-        article_content+=tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
+        article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
 
-    filename= '%s.md' % today
+    article = article_title + article_content
+    return title, article
+
+def create_markdown_file(title, article):
+    if not (title and article):
+        print 'No news info need write'
+        return
+    print 'start generate the markdown article.'
+
+    filename= '%s.md' % title
     with open("./tmp/%s" % filename, 'w') as f:
-        f.write(article_title + article_content)
+        f.write(article)
         f.flush()
     print 'the file name "%s" generated successfully.' % filename
+
+
+def create_hexo_file(title, article):
+    if not (title and article):
+        print 'No news info need write'
+        return
+    print 'start generate the hexo article.'
+
+    hexo_tpl = """---
+title: {title}
+copyright: true
+date: {datetime}
+tags: IT NEWS
+categories: IT NEWS
+---
+{content}
+    """
+
+    hexo_article = hexo_tpl.format(title=title, datetime=today_date_time, content=article)
+    filename = 'hexo_%s.md' % title
+    with open("./tmp/%s" % filename, 'w') as f:
+        f.write(hexo_article)
+        f.flush()
+
+    print 'the file name "%s" generated successfully.' % filename
+
+
+def generate_files(news, create_markdown=True, create_hexo=True):
+    if len(news) == 0:
+        print 'No news info need write'
+        return
+    title, article = create_markdown_content(news)
+
+    if create_markdown:
+        create_markdown_file(title, article)
+
+    if create_hexo:
+        create_hexo_file(title, article)
+
 
 if __name__ == "__main__":
 
@@ -117,5 +166,5 @@ if __name__ == "__main__":
     # ]
 
     print 'There are %d news will create' % len(news)
-    write_news_with_markdown(news)
+    generate_files(news)
     print 'Done'
