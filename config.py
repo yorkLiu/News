@@ -14,14 +14,14 @@ pageurls = [
         'type': 'xpath',
         'days': 2,
         'pattern': ".//div[@class='article-list']/div",
-        'position': {'title': './h4/a/text()', 'description': 'p/a/text()', 'url':'./h4/a/@href', 'date': './div/p/span/text()'}
+        'position': {'title': './h4/a/text()', 'description': 'p/a/text()', 'url':'./h4/a/@href', 'date': './div/p[1]/span/text()'}
     },
     {
         'url': 'https://blog.csdn.net/yunfupei0434',
         'type': 'xpath',
         'days': 1,
         'pattern': ".//div[@class='article-list']/div",
-        'position': {'title': './h4/a/text()', 'description': './p/a/text()', 'url':'./h4/a/@href', 'date': './div/p/span/text()'}
+        'position': {'title': './h4/a/text()', 'description': './p/a/text()', 'url':'./h4/a/@href', 'date': './div/p[1]/span/text()'}
 
     },
     {
