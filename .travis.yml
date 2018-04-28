@@ -34,5 +34,16 @@ after_success:
   - git remote
   - git add --all .
   - git commit -m "Auto Builder From Travis"
-#  - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
-  - git push --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
+  - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
+  - cd ..
+  - git clone https://github.com/yorkLiu/yorkliu.github.io.git
+  - ls -al
+  - cd yorkliu.github.io
+  - git checkout dev
+  - git branch
+  - cp ../News/tmp/hexo*.md ./source/_posts/
+  - git remote
+  - git add --all .
+  - git commit -m "Auto Builder From Travis to generate the IT NEWS"
+  - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/yorkliu.github.io.git dev
+
