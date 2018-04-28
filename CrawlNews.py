@@ -14,6 +14,7 @@ sys.setdefaultencoding("utf8")
 
 DATE_FORMAT_1='%Y-%m-%d'
 DATE_FORMAT_2='%m.%d.%Y'
+DATE_FORMAT_3='%Y/%m/%d'
 
 TIME_FORMAT='%H:%M:%S'
 
@@ -45,7 +46,7 @@ def crawl_news():
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         pattern = pageurl['pattern']
         position = pageurl['position']
-        days = pageurl['days'] or 1
+        days = pageurl['days'] if pageurl['days'] else 1
         crawl_dates = get_dates(days)
         response = requests.get(url, headers=get_header())
         htmlparser = etree.HTML(response.text)
@@ -64,8 +65,10 @@ def crawl_news():
             ue = content.xpath(position['url'])
             datee = content.xpath(position['date'])
 
-            createDate = datee[0].strip()
+            if not datee or len(datee) == 0:
+                break
 
+            createDate = get_article_createdate(datee)
             allow_crawl = False
             for date in crawl_dates:
                 allow_crawl = date in createDate
@@ -73,13 +76,13 @@ def crawl_news():
                     break
 
 
-            ## only get today write articals
+            # only get today write articals
             if not allow_crawl:
                 break
 
             if te and de and ue:
-                title = te[len(te)-1].strip()
-                description = de[0].strip()
+                title = trim(te[len(te)-1])
+                description = trim(de[0])
                 url = ue[0].strip()
                 if not (url.startswith('https') or url.startswith('http')):
                     url=rooturl + url
@@ -92,6 +95,47 @@ def crawl_news():
             })
 
     return news
+
+
+def trim(chars):
+    return chars.replace('\r','').replace('\n','').replace('\r\n','').strip()
+
+import re
+patten_m_d=re.compile(r'\d{1,}月\d{1,}日')
+patten_y_m_d=re.compile(r'\d{1,}年\d{1,}月\d{1,}日')
+patten_y_m_d_with_1 = re.compile(r'\d{1,}/\d{1,}/\d{1,}')
+patten_y_m_d_with_2 = re.compile(r'\d{1,}-\d{1,}-\d{1,}')
+def get_article_createdate(dates):
+    now_without_time = datetime.strptime(datetime.today().strftime(DATE_FORMAT_1), DATE_FORMAT_1)
+    createDate = str(trim(dates[len(dates) - 1]))
+    delta_days = 0
+    if '今天' in createDate or '小时前' in createDate or '分钟前' in createDate:
+        delta_days=0
+    elif '昨天' in createDate:
+        delta_days=-1
+    elif '天前' in createDate:
+        delta_days = -(int(trim(createDate.replace('天前', ''))))
+
+    elif patten_m_d.search(createDate):
+        m_d = patten_m_d.search(createDate).group().replace("月", "-").replace("日", "")
+        d = datetime.strptime('%s-%s' % (datetime.today().year, m_d), DATE_FORMAT_1)
+        delta_days = (d - now_without_time).days
+
+    elif patten_y_m_d.search(createDate):
+        cd = patten_m_d.search(createDate).group().replace("年", "-").replace("月", "-").replace("日", "")
+        d = datetime.strptime(cd, DATE_FORMAT_1)
+        delta_days = (d - now_without_time).days
+
+    elif patten_y_m_d_with_1.search(createDate):
+        d = datetime.strptime(patten_y_m_d_with_1.search(createDate).group(), DATE_FORMAT_3)
+        delta_days = (d - now_without_time).days
+
+    elif patten_y_m_d_with_2.search(createDate):
+        d = datetime.strptime(patten_y_m_d_with_2.search(createDate).group(), DATE_FORMAT_1)
+        delta_days = (d - now_without_time).days
+
+    return (now_without_time + timedelta(days=delta_days)).strftime(DATE_FORMAT_1)
+
 
 def create_markdown_content(news):
     if len(news) == 0:
@@ -162,7 +206,6 @@ def generate_files(news, create_markdown=True, create_hexo=True):
 
 
 if __name__ == "__main__":
-
     news = crawl_news()
     # news = [
     #     {'url': 'https://www.jianshu.com/p/7c5b27f4c45f', 'createDate': '2018-04-27T16:14:21+08:00',

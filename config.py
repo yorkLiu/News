@@ -54,6 +54,20 @@ pageurls = [
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
 
+    },
+    {
+        'url': 'http://www.lanjingtmt.com/news',
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[@class='in-main-l']/dl",
+        'position': {'title': './dd/h2/a/text()', 'description': './dd/p[2]/text()', 'url': './dd/h2/a/@href', 'date': './dd/p[@class="msg"]/text()'}
+    },
+    {
+        'url': 'http://www.woshipm.com/',
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[contains(@class,'home-post-list')]/div",
+        'position': {'title': './div[@class="content"]/h2/a/text()', 'description': './div[@class="content"]/p/text()', 'url': './div[@class="content"]/h2/a/@href', 'date': './div[@class="content"]/div[@class="stream-list-meta"]/time/text()'}
     }
     # ,
     # {
