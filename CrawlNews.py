@@ -6,6 +6,7 @@ from lxml import etree
 from config import pageurls
 from config import get_header
 from datetime import datetime
+from datetime import timedelta
 
 import sys
 reload(sys)
@@ -24,6 +25,13 @@ TIME_FORMAT='%H:%M:%S'
 today = datetime.now().strftime(DATE_FORMAT_1)
 today_date_time =  datetime.now().strftime('%s %s' % (DATE_FORMAT_1, TIME_FORMAT))
 
+def get_dates(days=1):
+    dates = set([])
+    dates.add(today)
+    for d in range(1, days):
+        dates.add((datetime.today() + timedelta(days=-d)).strftime(DATE_FORMAT_1))
+
+    return dates
 
 def crawl_news():
     """
@@ -37,6 +45,8 @@ def crawl_news():
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         pattern = pageurl['pattern']
         position = pageurl['position']
+        days = pageurl['days'] or 1
+        crawl_dates = get_dates(days)
         response = requests.get(url, headers=get_header())
         htmlparser = etree.HTML(response.text)
         contents =  htmlparser.xpath(pattern)
@@ -56,8 +66,15 @@ def crawl_news():
 
             createDate = datee[0].strip()
 
+            allow_crawl = False
+            for date in crawl_dates:
+                allow_crawl = date in createDate
+                if allow_crawl:
+                    break
+
+
             ## only get today write articals
-            if not str(createDate).startswith(today):
+            if not allow_crawl:
                 break
 
             if te and de and ue:

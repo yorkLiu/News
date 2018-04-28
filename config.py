@@ -1,22 +1,25 @@
 # coding:utf-8
 import random
 
-'''
-定义规则 urls:url列表
+"""
+定义规则 pageurls:url列表
          type：解析方式,取值 regular(正则表达式),xpath(xpath解析),module(自定义第三方模块解析)
+         days: 抓取几天的内容 (1 表示只抓取今天的文章, 2: 表示今天和昨天, ...)
          patten：可以是正则表达式,可以是xpath语句不过要和上面的相对应
-'''
+"""
 
 pageurls = [
     {
         'url': 'https://blog.csdn.net/csdnnews',
         'type': 'xpath',
+        'days': 2,
         'pattern': ".//div[@class='article-list']/div",
         'position': {'title': './h4/a/text()', 'description': 'p/a/text()', 'url':'./h4/a/@href', 'date': './div/p/span/text()'}
     },
     {
         'url': 'https://blog.csdn.net/yunfupei0434',
         'type': 'xpath',
+        'days': 1,
         'pattern': ".//div[@class='article-list']/div",
         'position': {'title': './h4/a/text()', 'description': './p/a/text()', 'url':'./h4/a/@href', 'date': './div/p/span/text()'}
 
@@ -24,6 +27,7 @@ pageurls = [
     {
         'url': 'https://www.jianshu.com/u/a2c6cc53b173',
         'type': 'xpath',
+        'days': 1,
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
 
@@ -31,6 +35,7 @@ pageurls = [
     {
         'url': 'https://www.jianshu.com/c/f546444928a7',
         'type': 'xpath',
+        'days': 1,
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
 
@@ -38,12 +43,14 @@ pageurls = [
     {
         'url': 'https://www.jianshu.com/c/7847442e0728',
         'type': 'xpath',
+        'days': 1,
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
     },
     {
         'url': 'https://www.jianshu.com/u/4327d37e6502',
         'type': 'xpath',
+        'days': 1,
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
 
