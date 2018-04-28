@@ -37,6 +37,7 @@ after_success:
 #  - cd ./tmp
 #  - ls -al
 #  - git init
+  - git remote
   - git add --all .
   - git commit -m "Auto Builder From Travis"
   - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
