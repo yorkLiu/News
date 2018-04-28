@@ -36,7 +36,7 @@ after_success:
   - git commit -m "Auto Builder From Travis"
   - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
   - cd ..
-  -  git clone --depth=50 --branch=dev https://github.com/yorkLiu/yorkLiu.github.io.git yorkLiu/yorkLiu.github.io
+  - git clone https://github.com/yorkLiu/yorkliu.github.io.git
   - ls -al
   - cd yorkliu.github.io
   - git checkout dev
