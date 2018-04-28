@@ -28,11 +28,10 @@ script:
 
 
 after_success:
-#  - pwd
-#  - ls -al
-#  - cd ./tmp
-#  - ls -al
-#  - git init
+  - ls -al
+  - cd .git
+  - ls -al
+  - git remote
   - git add --all .
   - git commit -m "Auto Builder From Travis"
   - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
