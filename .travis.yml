@@ -24,7 +24,7 @@ before_install:
 
 # 安装依赖组件
 install:
-  - pip install request lxml
+  - pip install requests lxml
 
 # 执行的命令
 script:
