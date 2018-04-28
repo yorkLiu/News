@@ -32,7 +32,10 @@ script:
 
 
 after_success:
+  - pwd
+  - ls -al
   - cd ./tmp
+  - ls -al
   - git init
   - git add --all .
   - git commit -m "Auto Builder From Travis"
