@@ -29,9 +29,9 @@ script:
 
 after_success:
   - ls -al
-  - cd .git
-  - ls -al
+  - git branch
   - git remote
   - git add --all .
   - git commit -m "Auto Builder From Travis"
-  - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
+#  - git push --quiet --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
+  - git push origin --force https://$REPO_TOKEN@github.com/yorkLiu/News.git master
