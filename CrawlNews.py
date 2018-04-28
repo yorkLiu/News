@@ -89,10 +89,10 @@ def write_news_with_markdown(news):
     for c in news:
         article_content+=tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
 
-    filename= '%s.md' % title
+    filename= '%s.md' % today
     with open("./tmp/%s" % filename, 'w') as f:
         f.write(article_title + article_content)
-
+        f.flush()
     print 'the file name "%s" generated successfully.' % filename
 
 if __name__ == "__main__":
