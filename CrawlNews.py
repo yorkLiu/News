@@ -148,8 +148,8 @@ def create_markdown_content(news):
         print 'No news info need write'
         return
 
-    tpl_article_title = "# {category_title}\n"
-    tpl_article_top_summary = "<details><summary><h4><a href='{summary_url}'>{summary_title}</a></h4></summary>{summary_content}</details>\n"
+    tpl_article_title = "# {category_title}\n\n"
+    tpl_article_top_summary = "<details><summary><b>{summary_title}</b></summary>{summary_content}</details>\n"
     tpl_article_content = ' ## [{title}]({url})\n > {description}\n'
 
     title = '%s IT News' % today
