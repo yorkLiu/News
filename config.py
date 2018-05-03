@@ -26,6 +26,23 @@ pageurls = [
         'position': {'title': './article[2]/h2/text()', 'description': './article[2]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
     },
     {
+        'url': 'http://www.51cto.com/',
+        'type': 'xpath',
+        'days': 1,
+        'pageEncoding': 'gb2312',
+        'pattern': ".//div[contains(@class, 'home-right')]/div[1]/div[contains(@class,'zd-list')]/ul/li",
+        'position': {'title': './a[2]/span/text()', 'description': './a[2]/span/text()', 'url':'./a[2]/@href', 'date': '今天'}
+    },
+    {
+        'url': 'http://www.51cto.com/',
+        'type': 'xpath',
+        'days': 1,
+        'pageEncoding': 'gb2312',
+        'total': 10,
+        'pattern': ".//div[contains(@class, 'home-left-list')][1]/ul/li//div[contains(@class,'rinfo')]",
+        'position': {'title': './a/text()', 'description': './p/text()', 'url':'./a/@href', 'date': './div[contains(@class, "time")]/i/text()'}
+    },
+    {
         'url': 'https://blog.csdn.net/csdnnews',
         'type': 'xpath',
         'days': 2,

@@ -45,6 +45,8 @@ def crawl_news():
         tmpurls =  url.split('/')
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         isSummary = 'summary' in pageurl and pageurl['summary'] is True
+        page_encoding = pageurl['pageEncoding'] if 'pageEncoding' in pageurl else None
+        total_count = pageurl['total'] if 'total' in pageurl else None
         pattern = pageurl['pattern']
         position = pageurl['position']
         days = pageurl['days'] if pageurl['days'] else 1
@@ -59,11 +61,18 @@ def crawl_news():
         #     if key.lower() in url.lower():
         #         cdate = today.strftime(DATE_FORMATTER[key])
         #         break
+
+        indx=0
         for content in contents:
+            if total_count and total_count > 0 and indx>=total_count:
+                print('Only Crawl top %d articles', total_count)
+                break
+
             te = content.xpath(position['title'])
             de = content.xpath(position['description'])
             ue = content.xpath(position['url']) if position['url'] else None
-            datee = content.xpath(position['date'])
+            datee = ['今天'] if position['date'] in ['today', '今天'] else content.xpath(position['date'])
+            # datee = content.xpath(position['date'])
 
             if not datee or len(datee) == 0:
                 break
@@ -81,6 +90,7 @@ def crawl_news():
                 break
 
             if te and de:
+                indx+=1
                 title = trim(te[len(te)-1])
                 if isSummary:
                     description = etree.tostring(de[0],pretty_print=True)
@@ -92,10 +102,11 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
+
             news.append({
                 'isSummary': isSummary,
-                'title': title,
-                'description': description,
+                'title': title.encode('latin1').decode(page_encoding) if page_encoding and page_encoding.lower() !='utf-8' else title,
+                'description': description.encode('latin1').decode(page_encoding) if page_encoding and page_encoding.lower() !='utf-8' else description,
                 'url': url,
                 'createDate': createDate
             })
