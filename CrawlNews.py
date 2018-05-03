@@ -87,7 +87,6 @@ def crawl_news():
                 else:
                     description = trim(de[0])
 
-                url = ''
                 if ue:
                     url = ue[0].strip()
                     if not (url.startswith('https') or url.startswith('http')):
@@ -150,7 +149,7 @@ def create_markdown_content(news):
         return
 
     tpl_article_title = "# {category_title}\n"
-    tpl_article_top_summary = "<details><summary>{summary_title}</summary>{summary_content}</details>\n"
+    tpl_article_top_summary = "<details><summary><h4><a href='{summary_url}'>{summary_title}</a></h4></summary>{summary_content}</details>\n"
     tpl_article_content = ' ## [{title}]({url})\n > {description}\n'
 
     title = '%s IT News' % today
@@ -159,7 +158,7 @@ def create_markdown_content(news):
     article_content = ""
     for c in news:
         if 'isSummary' in c and c['isSummary']:
-            article_top_summary += tpl_article_top_summary.format(summary_title=c['title'], summary_content=c['description'])
+            article_top_summary += tpl_article_top_summary.format(summary_title=c['title'], summary_url=c['url'], summary_content=c['description'])
             continue
 
         article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
