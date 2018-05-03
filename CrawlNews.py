@@ -44,6 +44,7 @@ def crawl_news():
         url = pageurl['url']
         tmpurls =  url.split('/')
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
+        isSummary = 'summary' in pageurl and pageurl['summary'] is True
         pattern = pageurl['pattern']
         position = pageurl['position']
         days = pageurl['days'] if pageurl['days'] else 1
@@ -58,11 +59,10 @@ def crawl_news():
         #     if key.lower() in url.lower():
         #         cdate = today.strftime(DATE_FORMATTER[key])
         #         break
-
         for content in contents:
             te = content.xpath(position['title'])
             de = content.xpath(position['description'])
-            ue = content.xpath(position['url'])
+            ue = content.xpath(position['url']) if position['url'] else None
             datee = content.xpath(position['date'])
 
             if not datee or len(datee) == 0:
@@ -80,14 +80,21 @@ def crawl_news():
             if not allow_crawl:
                 break
 
-            if te and de and ue:
+            if te and de:
                 title = trim(te[len(te)-1])
-                description = trim(de[0])
-                url = ue[0].strip()
-                if not (url.startswith('https') or url.startswith('http')):
-                    url=rooturl + url
+                if isSummary:
+                    description = etree.tostring(de[0],pretty_print=True)
+                else:
+                    description = trim(de[0])
+
+                url = ''
+                if ue:
+                    url = ue[0].strip()
+                    if not (url.startswith('https') or url.startswith('http')):
+                        url=rooturl + url
 
             news.append({
+                'isSummary': isSummary,
                 'title': title,
                 'description': description,
                 'url': url,
@@ -143,15 +150,21 @@ def create_markdown_content(news):
         return
 
     tpl_article_title = "# {category_title}\n"
+    tpl_article_top_summary = "<details><summary>{summary_title}</summary>{summary_content}</details>\n"
     tpl_article_content = ' ## [{title}]({url})\n > {description}\n'
 
     title = '%s IT News' % today
     article_title = tpl_article_title.format(category_title=title)
+    article_top_summary=""
     article_content = ""
     for c in news:
+        if 'isSummary' in c and c['isSummary']:
+            article_top_summary += tpl_article_top_summary.format(summary_title=c['title'], summary_content=c['description'])
+            continue
+
         article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
 
-    article = article_title + article_content
+    article = article_title + article_top_summary + article_content
     return title, article
 
 def create_markdown_file(title, article):

@@ -10,6 +10,22 @@ import random
 
 pageurls = [
     {
+        'url': 'http://www.woshipm.com/news',
+        'summary': True,
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[contains(@class,'u-width800')]/div",
+        'position': {'title': './article[1]/h2/text()', 'description': './article[1]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
+    },
+    {
+        'url': 'http://www.woshipm.com/news',
+        'summary': True,
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[contains(@class,'u-width800')]/div",
+        'position': {'title': './article[2]/h2/text()', 'description': './article[2]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
+    },
+    {
         'url': 'https://blog.csdn.net/csdnnews',
         'type': 'xpath',
         'days': 2,
