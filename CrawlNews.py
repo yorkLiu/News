@@ -65,7 +65,7 @@ def crawl_news():
         indx=0
         for content in contents:
             if total_count and total_count > 0 and indx>=total_count:
-                print('Only Crawl top %d articles', total_count)
+                print('Only Crawl top %d articles'% total_count)
                 break
 
             te = content.xpath(position['title'])
@@ -159,7 +159,7 @@ def create_markdown_content(news):
         print 'No news info need write'
         return
 
-    tpl_article_title = "# {category_title}\n\n"
+    tpl_article_title = "# {category_title}\n"
     tpl_article_top_summary = "<details><summary><b>{summary_title}</b></summary>{summary_content}</details>\n"
     tpl_article_content = ' ## [{title}]({url})\n > {description}\n'
 
@@ -174,7 +174,8 @@ def create_markdown_content(news):
 
         article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
 
-    article = article_title + article_top_summary+'\n' + article_content
+    # article = article_title + article_top_summary+'\n' + article_content
+    article = article_top_summary+'\n' + article_content
     return title, article
 
 def create_markdown_file(title, article):
@@ -185,8 +186,8 @@ def create_markdown_file(title, article):
 
     filename= '%s.md' % title
     with open("./tmp/%s" % filename, 'w') as f:
+        f.write(title)
         f.write(article)
-        f.flush()
     print 'the file name "%s" generated successfully.' % filename
 
 
@@ -210,7 +211,6 @@ categories: IT NEWS
     filename = 'hexo_%s.md' % title
     with open("./tmp/%s" % filename, 'w') as f:
         f.write(hexo_article)
-        f.flush()
 
     print 'the file name "%s" generated successfully.' % filename
 
