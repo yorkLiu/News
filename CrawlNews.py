@@ -45,7 +45,7 @@ def crawl_news():
         tmpurls =  url.split('/')
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         isSummary = 'summary' in pageurl and pageurl['summary'] is True
-        page_encoding = pageurl['pageEncoding'] if 'pageEncoding' in pageurl else None
+        page_encoding = pageurl['pageEncoding'].lower() if 'pageEncoding' in pageurl else None
         total_count = pageurl['total'] if 'total' in pageurl else None
         pattern = pageurl['pattern']
         position = pageurl['position']
@@ -102,14 +102,13 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
-
-            news.append({
-                'isSummary': isSummary,
-                'title': title.encode('latin1').decode(page_encoding) if page_encoding and page_encoding.lower() !='utf-8' else title,
-                'description': description.encode('latin1').decode(page_encoding) if page_encoding and page_encoding.lower() !='utf-8' else description,
-                'url': url,
-                'createDate': createDate
-            })
+                news.append({
+                    'isSummary': isSummary,
+                    'title': title.encode('latin1').decode(page_encoding) if page_encoding and page_encoding !='utf-8' else title,
+                    'description': description.encode('latin1').decode(page_encoding) if page_encoding and page_encoding !='utf-8' else description,
+                    'url': url,
+                    'createDate': createDate
+                })
 
     return news
 

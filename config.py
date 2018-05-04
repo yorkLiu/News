@@ -101,7 +101,30 @@ pageurls = [
         'days': 1,
         'pattern': ".//div[contains(@class,'home-post-list')]/div",
         'position': {'title': './div[@class="content"]/h2/a/text()', 'description': './div[@class="content"]/p/text()', 'url': './div[@class="content"]/h2/a/@href', 'date': './div[@class="content"]/div[@class="stream-list-meta"]/time/text()'}
+    },
+    {
+        'url': 'http://www.chanpin100.com/',
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[@class='article-container']/div[@class='item']/div/div[@class='media-body']",
+        'position': {'title': './h4/a/text()', 'description': './p[@class="article-summary"]/text()', 'url': './h4/a/@href', 'date': './ul[@class="article-info"]/li[@class="date"]/text()'}
+    },
+    {
+        'url': 'http://www.pmtoo.com/',
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[@class='news-list']/article/div[@class='news-con']",
+        'position': {'title': './h2/a/text()', 'description': './div[@class="des"]/text()', 'url': './h2/a/@href', 'date': './div[@class="author"]/div[@class="avatar-des"]/div/span[@class="time"]/text()'}
     }
+
+    # ,
+    # {
+    #     'url': 'https://www.pmcaff.com/',
+    #     'type': 'xpath',
+    #     'days': 1,
+    #     'pattern': ".//div[contains(@class,'feed')]/ul[2]/li",
+    #     'position': {'title': './table/tbody/tr/td[contains(@class, "item-title")]/a/text()', 'description': './table/tbody/tr/td[contains(@class, "item-title")]/a/text()', 'url': './table/tbody/tr/td[contains(@class, "item-title")]/a/@href', 'date': './table/tbody/tr/td[contains(@class, "item-title")]/div/a[2]/@title'}
+    # },
     # ,
     # {
     #     'url': '',
