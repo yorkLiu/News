@@ -11,6 +11,9 @@ import random
 
 STOP_WORDS=['公告', '有奖辩论']
 
+# 默认抓取 20条
+DEFAULT_TOTAL_CRAWL=20
+
 pageurls = [
     {
         'url': 'http://www.woshipm.com/news',
@@ -107,21 +110,21 @@ pageurls = [
         'position': {'title': './dd/h2/a/text()', 'description': './dd/p[2]/text()', 'url': './dd/h2/a/@href', 'date': './dd/p[@class="msg"]/text()'}
     },
     {
-        'url': 'http://www.woshipm.com/',
+        'url': 'http://www.woshipm.com',
         'type': 'xpath',
         'days': 1,
         'pattern': ".//div[contains(@class,'home-post-list')]/div",
         'position': {'title': './div[@class="content"]/h2/a/text()', 'description': './div[@class="content"]/p/text()', 'url': './div[@class="content"]/h2/a/@href', 'date': './div[@class="content"]/div[@class="stream-list-meta"]/time/text()'}
     },
     {
-        'url': 'http://www.chanpin100.com/',
+        'url': 'http://www.chanpin100.com',
         'type': 'xpath',
         'days': 1,
         'pattern': ".//div[@class='article-container']/div[@class='item']/div/div[@class='media-body']",
         'position': {'title': './h4/a/text()', 'description': './p[@class="article-summary"]/text()', 'url': './h4/a/@href', 'date': './ul[@class="article-info"]/li[@class="date"]/text()'}
     },
     {
-        'url': 'http://www.pmtoo.com/',
+        'url': 'http://www.pmtoo.com',
         'type': 'xpath',
         'days': 1,
         'pattern': ".//div[@class='news-list']/article/div[@class='news-con']",

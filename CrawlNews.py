@@ -5,6 +5,7 @@ import requests
 from lxml import etree
 from config import pageurls
 from config import get_header
+from config import DEFAULT_TOTAL_CRAWL
 from config import STOP_WORDS
 from datetime import datetime
 from datetime import timedelta
@@ -47,7 +48,7 @@ def crawl_news():
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         isSummary = 'summary' in pageurl and pageurl['summary'] is True
         page_encoding = pageurl['pageEncoding'].lower() if 'pageEncoding' in pageurl else None
-        total_count = pageurl['total'] if 'total' in pageurl else None
+        total_count = pageurl['total'] if 'total' in pageurl else DEFAULT_TOTAL_CRAWL
         pattern = pageurl['pattern']
         position = pageurl['position']
         days = pageurl['days'] if pageurl['days'] else 1
@@ -88,7 +89,7 @@ def crawl_news():
 
             # only get today write articals
             if not allow_crawl:
-                break
+                continue
 
             if te and de:
                 title = trim(te[len(te)-1])
