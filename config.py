@@ -5,8 +5,11 @@ import random
 定义规则 pageurls:url列表
          type：解析方式,取值 regular(正则表达式),xpath(xpath解析),module(自定义第三方模块解析)
          days: 抓取几天的内容 (1 表示只抓取今天的文章, 2: 表示今天和昨天, ...)
+         total: 共抓却多少条
          patten：可以是正则表达式,可以是xpath语句不过要和上面的相对应
 """
+
+STOP_WORDS=['公告', '有奖辩论']
 
 pageurls = [
     {
@@ -41,6 +44,14 @@ pageurls = [
         'total': 10,
         'pattern': ".//div[contains(@class, 'home-left-list')][1]/ul/li//div[contains(@class,'rinfo')]",
         'position': {'title': './a/text()', 'description': './p/text()', 'url':'./a/@href', 'date': './div[contains(@class, "time")]/i/text()'}
+    },
+    {
+        'url': 'https://blog.csdn.net',
+        'type': 'xpath',
+        'days': 1,
+        'total': 15,
+        'pattern': ".//ul[contains(@class, 'feedlist_mod')]/li",
+        'position': {'title': './div/div[@class="title"]/h2/a/text()', 'description': './div/div[@class="title"]/h2/a/text()', 'url':'./div/div[@class="title"]/h2/a/@href', 'date': './@shown-time'}
     },
     {
         'url': 'https://blog.csdn.net/csdnnews',
