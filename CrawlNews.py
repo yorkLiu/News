@@ -138,7 +138,6 @@ def get_article_createdate(dates):
     createDate = str(trim(dates[len(dates) - 1]))
     delta_days = 0
     if createDate.isdigit():
-        print datetime.fromtimestamp(float(createDate))
         # it's a timestamp, e.g: 1525656310
         delta_days = (datetime.fromtimestamp(float(createDate)) - now_without_time).days
 
