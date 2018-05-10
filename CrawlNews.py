@@ -110,8 +110,8 @@ def crawl_news():
 
                 news.append({
                     'isSummary': isSummary,
-                    'title': title.encode('latin1').decode(page_encoding) if page_encoding and page_encoding !='utf-8' else title,
-                    'description': description.encode('latin1').decode(page_encoding) if page_encoding and page_encoding !='utf-8' else description,
+                    'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
+                    'description': description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else description,
                     'url': url,
                     'createDate': createDate
                 })
