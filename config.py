@@ -14,6 +14,9 @@ STOP_WORDS=['公告', '有奖辩论']
 # 默认抓取 20条
 DEFAULT_TOTAL_CRAWL=20
 
+# description 显示多少个字符
+TOTAL_CHARS_SHOWS_IN_DESCRIPTION=150
+
 pageurls = [
     {
         'url': 'http://www.woshipm.com/news',

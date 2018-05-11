@@ -6,6 +6,7 @@ from lxml import etree
 from config import pageurls
 from config import get_header
 from config import DEFAULT_TOTAL_CRAWL
+from config import TOTAL_CHARS_SHOWS_IN_DESCRIPTION
 from config import STOP_WORDS
 from datetime import datetime
 from datetime import timedelta
@@ -102,6 +103,7 @@ def crawl_news():
                     description = etree.tostring(de[0],pretty_print=True)
                 else:
                     description = trim(de[0])
+                    description = description if len(description) <= TOTAL_CHARS_SHOWS_IN_DESCRIPTION else description[0:len(description) > TOTAL_CHARS_SHOWS_IN_DESCRIPTION]
 
                 if ue:
                     url = ue[0].strip()
