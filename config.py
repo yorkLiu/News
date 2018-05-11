@@ -32,6 +32,20 @@ pageurls = [
         'position': {'title': './article[2]/h2/text()', 'description': './article[2]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
     },
     {
+        'url': 'https://www.oschina.net/blog',
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[@id='topsOfRecommend']/div/div[contains(@class, 'box-aw')]",
+        'position': {'title': './header/a/@title', 'description': './section/text()', 'url':'./header/a/@href', 'date': './footer/span[3]/text()'}
+    },
+    {
+        'url': 'https://www.oschina.net/news',
+        'type': 'xpath',
+        'days': 1,
+        'pattern': ".//div[@id='all-news']/div/div[contains(@class, 'box-aw')]",
+        'position': {'title': './a/span/text()', 'description': './div[contains(@class, "summary")]/text()', 'url':'./a/@href', 'date': './div[contains(@class, "from")]/span/text()'}
+    },
+    {
         'url': 'http://www.51cto.com/',
         'type': 'xpath',
         'days': 1,
@@ -131,14 +145,6 @@ pageurls = [
         'position': {'title': './h2/a/text()', 'description': './div[@class="des"]/text()', 'url': './h2/a/@href', 'date': './div[@class="author"]/div[@class="avatar-des"]/div/span[@class="time"]/text()'}
     }
 
-    # ,
-    # {
-    #     'url': 'https://www.pmcaff.com/',
-    #     'type': 'xpath',
-    #     'days': 1,
-    #     'pattern': ".//div[contains(@class,'feed')]/ul[2]/li",
-    #     'position': {'title': './table/tbody/tr/td[contains(@class, "item-title")]/a/text()', 'description': './table/tbody/tr/td[contains(@class, "item-title")]/a/text()', 'url': './table/tbody/tr/td[contains(@class, "item-title")]/a/@href', 'date': './table/tbody/tr/td[contains(@class, "item-title")]/div/a[2]/@title'}
-    # },
     # ,
     # {
     #     'url': '',

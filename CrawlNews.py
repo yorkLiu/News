@@ -77,7 +77,7 @@ def crawl_news():
             # datee = content.xpath(position['date'])
 
             if not datee or len(datee) == 0:
-                break
+                continue
 
             createDate = get_article_createdate(datee)
             allow_crawl = False
