@@ -10,6 +10,7 @@ from config import TOTAL_CHARS_SHOWS_IN_DESCRIPTION
 from config import STOP_WORDS
 from datetime import datetime
 from datetime import timedelta
+import html
 
 import sys
 reload(sys)
@@ -110,6 +111,8 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
+                title = html.escape(title)
+                description = html.escape(description)
                 news.append({
                     'isSummary': isSummary,
                     'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
