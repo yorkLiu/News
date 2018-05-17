@@ -120,14 +120,13 @@ def crawl_news():
                 else:
                     description = trim(de[0])
                     description = description if len(description) <= TOTAL_CHARS_SHOWS_IN_DESCRIPTION else description[0:TOTAL_CHARS_SHOWS_IN_DESCRIPTION]
+                    description = escape(description)
 
                 if ue:
                     url = ue[0].strip()
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
-                title = escape(title)
-                description = escape(description)
                 news.append({
                     'isSummary': isSummary,
                     'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
