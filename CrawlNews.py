@@ -10,7 +10,6 @@ from config import TOTAL_CHARS_SHOWS_IN_DESCRIPTION
 from config import STOP_WORDS
 from datetime import datetime
 from datetime import timedelta
-import html
 
 import sys
 reload(sys)
@@ -29,6 +28,22 @@ TIME_FORMAT='%H:%M:%S'
 
 today = datetime.now().strftime(DATE_FORMAT_1)
 today_date_time =  datetime.now().strftime('%s %s' % (DATE_FORMAT_1, TIME_FORMAT))
+
+
+def escape(s, quote=True):
+    """
+    Replace special characters "&", "<" and ">" to HTML-safe sequences.
+    If the optional flag quote is true (the default), the quotation mark
+    characters, both double quote (") and single quote (') characters are also
+    translated.
+    """
+    s = s.replace("&", "&amp;")  # Must be done first!
+    s = s.replace("<", "&lt;")
+    s = s.replace(">", "&gt;")
+    if quote:
+        s = s.replace('"', "&quot;")
+        s = s.replace('\'', "&#x27;")
+    return s
 
 def get_dates(days=1):
     dates = set([])
@@ -111,8 +126,8 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
-                title = html.escape(title)
-                description = html.escape(description)
+                title = escape(title)
+                description = escape(description)
                 news.append({
                     'isSummary': isSummary,
                     'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
