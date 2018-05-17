@@ -9,7 +9,7 @@ import random
          patten：可以是正则表达式,可以是xpath语句不过要和上面的相对应
 """
 
-STOP_WORDS=['公告', '有奖辩论']
+STOP_WORDS=['公告', '有奖辩论', '辩论赛']
 
 # 默认抓取 20条
 DEFAULT_TOTAL_CRAWL=20
