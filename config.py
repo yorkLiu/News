@@ -86,7 +86,13 @@ pageurls = [
         'days': 1,
         'pattern': ".//div[@class='article-list']/div",
         'position': {'title': './h4/a/text()', 'description': './p/a/text()', 'url':'./h4/a/@href', 'date': './div/p[1]/span/text()'}
-
+    },
+    {
+        'url': 'https://blog.csdn.net/column/details/eastmount-kgdmnlp.html',
+        'type': 'xpath',
+        'days': 5,
+        'pattern': ".//ul[@class='detail_list']/li",
+        'position': {'title': './h4/a/text()', 'description': './p/text()', 'url':'./h4/a/@href', 'date': './div/span/text()'}
     },
     {
         'url': 'https://www.jianshu.com/u/a2c6cc53b173',

@@ -149,6 +149,7 @@ def is_contains_stop_words(str, stop_words=STOP_WORDS):
     return False
 
 import re
+patten_d_days_ago=re.compile(r'\d{1,}\s*天前')
 patten_m_d=re.compile(r'\d{1,}月\d{1,}日')
 patten_y_m_d=re.compile(r'\d{1,}年\d{1,}月\d{1,}日')
 patten_y_m_d_with_1 = re.compile(r'\d{1,}/\d{1,}/\d{1,}')
@@ -165,8 +166,12 @@ def get_article_createdate(dates):
         delta_days=0
     elif '昨天' in createDate:
         delta_days=-1
+    elif '前天' in createDate:
+        delta_days = -2
     elif '天前' in createDate:
-        delta_days = -(int(trim(createDate.replace('天前', ''))))
+        print trim(patten_d_days_ago.search(trim(createDate)).group().replace('天前', ''))
+        delta_days = -int(trim(patten_d_days_ago.search(trim(createDate)).group().replace('天前', '')))
+        # delta_days = -(int(trim(createDate.replace('天前', ''))))
 
     elif patten_m_d.search(createDate):
         m_d = patten_m_d.search(createDate).group().replace("月", "-").replace("日", "")
