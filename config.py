@@ -7,6 +7,15 @@ import random
          days: 抓取几天的内容 (1 表示只抓取今天的文章, 2: 表示今天和昨天, ...)
          total: 共抓却多少条
          patten：可以是正则表达式,可以是xpath语句不过要和上面的相对应
+         pageEncoding: 访问的page 的 encoding是什么，默认是 'utf-8', 如果是其它的，则需要指定，如('gb2312')
+         classfication: 文章所属类别 (以后还会添加)
+                - IT 新闻
+                - 架构
+                - 人工智能
+                - PM (产品经理)
+         
+         extra_headers: 访问该url 在get_header()方法中之外的的header，如，访问 '云栖'需要额外的header 'x-requested-with': 'XMLHttpRequest'     
+                
 """
 
 STOP_WORDS=['公告', '有奖辩论', '辩论赛']
@@ -37,6 +46,7 @@ pageurls = [
     {
         'url': 'https://www.oschina.net/blog',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'pattern': ".//div[@id='topsOfRecommend']/div/div[contains(@class, 'box-aw')]",
         'position': {'title': './header/a/@title', 'description': './section/text()', 'url':'./header/a/@href', 'date': './footer/span[3]/text()'}
@@ -44,6 +54,7 @@ pageurls = [
     {
         'url': 'https://www.oschina.net/news',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'pattern': ".//div[@id='all-news']/div/div[contains(@class, 'box-aw')]",
         'position': {'title': './a/span/text()', 'description': './div[contains(@class, "summary")]/text()', 'url':'./a/@href', 'date': './div[contains(@class, "from")]/span/text()'}
@@ -51,6 +62,7 @@ pageurls = [
     {
         'url': 'http://www.51cto.com/',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'pageEncoding': 'gb2312',
         'pattern': ".//div[contains(@class, 'home-right')]/div[1]/div[contains(@class,'zd-list')]/ul/li",
@@ -59,6 +71,7 @@ pageurls = [
     {
         'url': 'http://www.51cto.com/',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'pageEncoding': 'gb2312',
         'total': 10,
@@ -68,6 +81,7 @@ pageurls = [
     {
         'url': 'https://blog.csdn.net',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'total': 15,
         'pattern': ".//ul[contains(@class, 'feedlist_mod')]/li",
@@ -76,65 +90,73 @@ pageurls = [
     {
         'url': 'https://blog.csdn.net/csdnnews',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 2,
         'pattern': ".//div[@class='article-list']/div",
         'position': {'title': './h4/a/text()', 'description': 'p/a/text()', 'url':'./h4/a/@href', 'date': './div/p[1]/span/text()'}
     },
     {
-        'url': 'https://blog.csdn.net/yunfupei0434',
-        'type': 'xpath',
-        'days': 1,
-        'pattern': ".//div[@class='article-list']/div",
-        'position': {'title': './h4/a/text()', 'description': './p/a/text()', 'url':'./h4/a/@href', 'date': './div/p[1]/span/text()'}
-    },
-    {
-        'url': 'https://blog.csdn.net/column/details/eastmount-kgdmnlp.html',
-        'type': 'xpath',
-        'days': 5,
-        'pattern': ".//ul[@class='detail_list']/li",
-        'position': {'title': './h4/a/text()', 'description': './p/text()', 'url':'./h4/a/@href', 'date': './div/span/text()'}
-    },
-    {
-        'url': 'https://www.jianshu.com/u/a2c6cc53b173',
-        'type': 'xpath',
-        'days': 1,
-        'pattern': ".//div[@id='list-container']/ul/li",
-        'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
-
-    },
-    {
-        'url': 'https://www.jianshu.com/c/f546444928a7',
-        'type': 'xpath',
-        'days': 1,
-        'pattern': ".//div[@id='list-container']/ul/li",
-        'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
-
-    },
-    {
         'url': 'https://www.jianshu.com/c/7847442e0728',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
-    },
-    {
-        'url': 'https://www.jianshu.com/u/4327d37e6502',
-        'type': 'xpath',
-        'days': 1,
-        'pattern': ".//div[@id='list-container']/ul/li",
-        'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
-
     },
     {
         'url': 'http://www.lanjingtmt.com/news',
         'type': 'xpath',
+        'classfication': 'IT 新闻',
         'days': 1,
         'pattern': ".//div[@class='in-main-l']/dl",
         'position': {'title': './dd/h2/a/text()', 'description': './dd/p[2]/text()', 'url': './dd/h2/a/@href', 'date': './dd/p[@class="msg"]/text()'}
     },
     {
+        'url': 'https://www.jianshu.com/u/a2c6cc53b173',
+        'type': 'xpath',
+        'classfication': '架构',
+        'days': 1,
+        'pattern': ".//div[@id='list-container']/ul/li",
+        'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
+    },
+    {
+        'url': 'https://www.jianshu.com/c/f546444928a7',
+        'type': 'xpath',
+        'classfication': '架构',
+        'days': 1,
+        'pattern': ".//div[@id='list-container']/ul/li",
+        'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href',  'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
+    },
+    {
+        'url': 'https://yq.aliyun.com/homepage/cats/2/1',
+        'type': 'xpath',
+        'classfication': '人工智能',
+        'days': 1,
+        'pattern': ".//div[contains(@class,'item-box')]",
+        'position': {'title': './div[@class="item-info"]/div[1]/h3/text()', 'description': './div[@class="item-info"]/div[1]/p/text()', 'url':'./a/@href', 'date': './div[@class="item-info"]/div[2]/p[1]/span[2]/text()'},
+        'extra_headers': {'x-requested-with': 'XMLHttpRequest'}
+    },
+    {
+
+        'url': 'https://blog.csdn.net/yunfupei0434',
+        'type': 'xpath',
+        'classfication': '人工智能',
+        'days': 5,
+        'pattern': ".//ul[@class='detail_list']/li",
+        'position': {'title': './h4/a/text()', 'description': './p/text()', 'url':'./h4/a/@href', 'date': './div/span/text()'}
+    },
+    {
+        'url': 'https://blog.csdn.net/column/details/eastmount-kgdmnlp.html',
+        'type': 'xpath',
+        'classfication': '人工智能',
+        'days': 5,
+        'pattern': ".//ul[@class='detail_list']/li",
+        'position': {'title': './h4/a/text()', 'description': './p/text()', 'url':'./h4/a/@href', 'date': './div/span/text()'}
+    },
+    {
         'url': 'http://www.woshipm.com',
         'type': 'xpath',
+        'classfication': 'PM',
         'days': 1,
         'pattern': ".//div[contains(@class,'home-post-list')]/div",
         'position': {'title': './div[@class="content"]/h2/a/text()', 'description': './div[@class="content"]/p/text()', 'url': './div[@class="content"]/h2/a/@href', 'date': './div[@class="content"]/div[@class="stream-list-meta"]/time/text()'}
@@ -142,6 +164,7 @@ pageurls = [
     {
         'url': 'http://www.chanpin100.com',
         'type': 'xpath',
+        'classfication': 'PM',
         'days': 1,
         'pattern': ".//div[@class='article-container']/div[@class='item']/div/div[@class='media-body']",
         'position': {'title': './h4/a/text()', 'description': './p[@class="article-summary"]/text()', 'url': './h4/a/@href', 'date': './ul[@class="article-info"]/li[@class="date"]/text()'}
@@ -149,6 +172,7 @@ pageurls = [
     {
         'url': 'http://www.pmtoo.com',
         'type': 'xpath',
+        'classfication': 'PM',
         'days': 1,
         'pattern': ".//div[@class='news-list']/article/div[@class='news-con']",
         'position': {'title': './h2/a/text()', 'description': './div[@class="des"]/text()', 'url': './h2/a/@href', 'date': './div[@class="author"]/div[@class="avatar-des"]/div/span[@class="time"]/text()'}

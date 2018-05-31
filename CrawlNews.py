@@ -61,6 +61,9 @@ def crawl_news():
     news = []
     for pageurl in pageurls:
         url = pageurl['url']
+
+        print 'Read crawl url: ', url
+
         tmpurls =  url.split('/')
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         isSummary = 'summary' in pageurl and pageurl['summary'] is True
@@ -70,16 +73,16 @@ def crawl_news():
         position = pageurl['position']
         days = pageurl['days'] if pageurl['days'] else 1
         crawl_dates = get_dates(days)
-        response = requests.get(url, headers=get_header())
+
+
+        headers = get_header()
+        if pageurl.has_key('extra_headers') and type(pageurl['extra_headers']) is dict:
+            headers.update(pageurl['extra_headers'])
+
+
+        response = requests.get(url, headers=headers, timeout=20)
         htmlparser = etree.HTML(response.text)
         contents =  htmlparser.xpath(pattern)
-
-        ## format date
-        # cdate = today.strftime(DATE_FORMAT_1)
-        # for key in DATE_FORMATTER.keys():
-        #     if key.lower() in url.lower():
-        #         cdate = today.strftime(DATE_FORMATTER[key])
-        #         break
 
         indx=0
         for content in contents:
@@ -91,7 +94,6 @@ def crawl_news():
             de = content.xpath(position['description'])
             ue = content.xpath(position['url']) if position['url'] else None
             datee = ['今天'] if position['date'] in ['today', '今天'] else content.xpath(position['date'])
-            # datee = content.xpath(position['date'])
 
             if not datee or len(datee) == 0:
                 continue
@@ -169,9 +171,7 @@ def get_article_createdate(dates):
     elif '前天' in createDate:
         delta_days = -2
     elif '天前' in createDate:
-        print trim(patten_d_days_ago.search(trim(createDate)).group().replace('天前', ''))
         delta_days = -int(trim(patten_d_days_ago.search(trim(createDate)).group().replace('天前', '')))
-        # delta_days = -(int(trim(createDate.replace('天前', ''))))
 
     elif patten_m_d.search(createDate):
         m_d = patten_m_d.search(createDate).group().replace("月", "-").replace("日", "")
