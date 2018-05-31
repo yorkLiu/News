@@ -142,8 +142,8 @@ def crawl_news():
 
                 title = title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else title
                 description = description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else description
-                title = title.replace("#", '')
-                description = description.replace('#', '')
+                title = replace_chars(title)
+                description = replace_chars(description)
 
                 if not news.has_key(classfication):
                     news[classfication] = []
@@ -159,6 +159,8 @@ def crawl_news():
 
     return news
 
+def replace_chars(v):
+    return v.replace("#", '').replace('[', '\[').replace(']', '\]')
 
 def trim(chars):
     return chars.replace('\r','').replace('\n','').replace('\r\n','').strip()
@@ -291,7 +293,8 @@ categories: IT NEWS
 
 
 def generate_files(news, create_markdown=True, create_hexo=True):
-    if len(news) == 0:
+    total_news = sum([len(news[k]) for k in news])
+    if total_news == 0:
         print 'No news info need write'
         return
     title, article = create_markdown_content(news)
@@ -305,6 +308,7 @@ def generate_files(news, create_markdown=True, create_hexo=True):
 
 if __name__ == "__main__":
     news = crawl_news()
-    print 'There are %d news will create' % len(news)
+    total_news = sum([len(news[k]) for k in news])
+    print 'There are %d news will create' % total_news
     generate_files(news)
     print 'Done'
