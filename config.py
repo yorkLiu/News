@@ -31,6 +31,7 @@ pageurls = [
         'url': 'http://www.woshipm.com/news',
         'summary': True,
         'type': 'xpath',
+        'classfication': 'summary',
         'days': 1,
         'pattern': ".//div[contains(@class,'u-width800')]/div",
         'position': {'title': './article[1]/h2/text()', 'description': './article[1]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
@@ -39,6 +40,7 @@ pageurls = [
         'url': 'http://www.woshipm.com/news',
         'summary': True,
         'type': 'xpath',
+        'classfication': 'summary',
         'days': 1,
         'pattern': ".//div[contains(@class,'u-width800')]/div",
         'position': {'title': './article[2]/h2/text()', 'description': './article[2]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
@@ -135,6 +137,15 @@ pageurls = [
         'pattern': ".//div[contains(@class,'item-box')]",
         'position': {'title': './div[@class="item-info"]/div[1]/h3/text()', 'description': './div[@class="item-info"]/div[1]/p/text()', 'url':'./a/@href', 'date': './div[@class="item-info"]/div[2]/p[1]/span[2]/text()'},
         'extra_headers': {'x-requested-with': 'XMLHttpRequest'}
+    },
+    {
+        'url': 'https://blog.csdn.net/nav/ai',
+        'type': 'xpath',
+        'classfication': '人工智能',
+        'days': 1,
+        'total': 15,
+        'pattern': ".//ul[contains(@class, 'feedlist_mod')]/li",
+        'position': {'title': './div/div[@class="title"]/h2/a/text()', 'description': './div/div[@class="title"]/h2/a/text()', 'url':'./div/div[@class="title"]/h2/a/@href', 'date': './@shown-time'}
     },
     {
 

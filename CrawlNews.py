@@ -59,6 +59,7 @@ def crawl_news():
     :return: news list
     """
     news = []
+    news2 = {}
     for pageurl in pageurls:
         url = pageurl['url']
 
@@ -67,6 +68,8 @@ def crawl_news():
         tmpurls =  url.split('/')
         rooturl = "%s//%s" % (tmpurls[0], tmpurls[2])
         isSummary = 'summary' in pageurl and pageurl['summary'] is True
+        classfication = pageurl['classfication']
+
         page_encoding = pageurl['pageEncoding'].lower() if 'pageEncoding' in pageurl else None
         total_count = pageurl['total'] if 'total' in pageurl else DEFAULT_TOTAL_CRAWL
         pattern = pageurl['pattern']
@@ -129,7 +132,18 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
-                news.append({
+                # news.append({
+                #     'isSummary': isSummary,
+                #     'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
+                #     'description': description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else description,
+                #     'url': url,
+                #     'createDate': createDate
+                # })
+
+                if not news2.has_key(classfication):
+                    news2[classfication] = []
+
+                news2[classfication].append({
                     'isSummary': isSummary,
                     'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
                     'description': description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else description,
@@ -137,7 +151,8 @@ def crawl_news():
                     'createDate': createDate
                 })
 
-    return news
+
+    return news2
 
 
 def trim(chars):
@@ -207,12 +222,29 @@ def create_markdown_content(news):
     article_title = tpl_article_title.format(category_title=title)
     article_top_summary=""
     article_content = ""
-    for c in news:
-        if 'isSummary' in c and c['isSummary']:
-            article_top_summary += tpl_article_top_summary.format(summary_title=c['title'], summary_url=c['url'], summary_content=c['description'])
-            continue
 
-        article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
+
+    for key in news.keys():
+        if key == 'summary':
+            for c in news['summary']:
+                if 'isSummary' in c and c['isSummary']:
+                    article_top_summary += tpl_article_top_summary.format(summary_title=c['title'],
+                                                                          summary_url=c['url'],
+                                                                          summary_content=c['description'])
+                    continue
+
+        else:
+            article_content += '# %s\n' % key
+            for c in news[key]:
+                article_content += tpl_article_content.format(title=c['title'], url=c['url'],
+                                                              description=c['description'])
+
+    # for c in news:
+    #     if 'isSummary' in c and c['isSummary']:
+    #         article_top_summary += tpl_article_top_summary.format(summary_title=c['title'], summary_url=c['url'], summary_content=c['description'])
+    #         continue
+    #
+    #     article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
 
     # article = article_title + article_top_summary+'\n' + article_content
     article = article_top_summary+'\n' + article_content
