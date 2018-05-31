@@ -58,8 +58,8 @@ def crawl_news():
     craw the news
     :return: news list
     """
-    news = []
-    news2 = {}
+
+    news = {}
     for pageurl in pageurls:
         url = pageurl['url']
 
@@ -140,19 +140,24 @@ def crawl_news():
                 #     'createDate': createDate
                 # })
 
-                if not news2.has_key(classfication):
-                    news2[classfication] = []
+                title = title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else title
+                description = description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else description
+                title = title.replace("#", '')
+                description = description.replace('#', '')
 
-                news2[classfication].append({
+                if not news.has_key(classfication):
+                    news[classfication] = []
+
+                news[classfication].append({
                     'isSummary': isSummary,
-                    'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
-                    'description': description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else description,
+                    'title': title,
+                    'description': description,
                     'url': url,
                     'createDate': createDate
                 })
 
 
-    return news2
+    return news
 
 
 def trim(chars):
@@ -231,10 +236,8 @@ def create_markdown_content(news):
                     article_top_summary += tpl_article_top_summary.format(summary_title=c['title'],
                                                                           summary_url=c['url'],
                                                                           summary_content=c['description'])
-                    continue
-
         else:
-            article_content += '# %s\n' % key
+            article_content += '# %s \n' % key
             for c in news[key]:
                 article_content += tpl_article_content.format(title=c['title'], url=c['url'],
                                                               description=c['description'])
