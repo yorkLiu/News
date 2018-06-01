@@ -250,7 +250,7 @@ def create_markdown_content(news):
     #     article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
 
     # article = article_title + article_top_summary+'\n' + article_content
-    article = article_top_summary+'\n' + article_content
+    article = article_top_summary+'\n<p>&nbsp;</p>' + article_content
     return title, article
 
 def create_markdown_file(title, article):
