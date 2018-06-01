@@ -252,7 +252,7 @@ def create_markdown_content(news):
     # article = article_title + article_top_summary+'\n' + article_content
 
     if article_top_summary:
-        article_top_summary = article_top_summary+'\n<p>&nbsp;</p>'
+        article_top_summary = article_top_summary+'\n<p>&nbsp;</p>\n'
 
     article = article_top_summary+ article_content
     return title, article
