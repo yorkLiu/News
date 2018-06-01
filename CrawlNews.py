@@ -83,14 +83,19 @@ def crawl_news():
             headers.update(pageurl['extra_headers'])
 
 
-        response = requests.get(url, headers=headers, timeout=20)
+        try:
+            response = requests.get(url, headers=headers, timeout=20)
+        except:
+            print 'ERROR: could not visit the URL [%s]' % url
+            continue
+
         htmlparser = etree.HTML(response.text)
         contents =  htmlparser.xpath(pattern)
 
         indx=0
         for content in contents:
             if total_count and total_count > 0 and indx>=total_count:
-                print('Only Crawl top %d articles'% total_count)
+                print('Only allow Crawl top %d articles'% total_count)
                 break
 
             te = content.xpath(position['title'])
@@ -132,18 +137,12 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
-                # news.append({
-                #     'isSummary': isSummary,
-                #     'title': title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else title,
-                #     'description': description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding !='utf-8' else description,
-                #     'url': url,
-                #     'createDate': createDate
-                # })
-
                 title = title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else title
                 description = description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else description
-                title = replace_chars(title)
-                description = replace_chars(description)
+
+                if not isSummary:
+                    title = replace_chars(title)
+                    description = replace_chars(description)
 
                 if not news.has_key(classfication):
                     news[classfication] = []
@@ -155,7 +154,6 @@ def crawl_news():
                     'url': url,
                     'createDate': createDate
                 })
-
 
     return news
 
