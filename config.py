@@ -52,8 +52,7 @@ pageurls = [
         'classfication': 'IT 新闻',
         'days': 1,
         'pattern': ".//ul[contains(@class, 'news-list')]/li/div[@class='txt-box']",
-        'position': {'title': './h3/a/text()', 'description': './p/text()', 'url': './h3/a/@href',
-                     'date': './div[contains(@class, "s-p")]/span/@t'},
+        'position': {'title': './h3/a/text()', 'description': './p/text()', 'url': './h3/a/@href', 'date': './div[contains(@class, "s-p")]/span/@t'},
         'extra_headers': {'x-requested-with': 'XMLHttpRequest'}
     },
     {
@@ -62,8 +61,7 @@ pageurls = [
         'classfication': 'IT 新闻',
         'days': 1,
         'pattern': ".//ul[contains(@class, 'news-list')]/li",
-        'position': {'title': './p[@class="tit"]/a/text()', 'description': './div/div[2]/p[2]/a/text()',
-                     'url': '../p[@class="tit"]/a/@href', 'date': '今天'},
+        'position': {'title': './p[@class="tit"]/a/text()', 'description': './div/div[2]/p[2]/a/text()', 'url': './p[@class="tit"]/a/@href', 'date': '今天'},
         'extra_headers': {'x-requested-with': 'XMLHttpRequest'}
     },
     {
