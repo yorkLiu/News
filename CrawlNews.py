@@ -10,12 +10,12 @@ from config import TOTAL_CHARS_SHOWS_IN_DESCRIPTION
 from config import STOP_WORDS
 from datetime import datetime
 from datetime import timedelta
+from collections import OrderedDict
 
 import sys
 reload(sys)
 sys.setdefaultencoding("utf8")
 
-from io import StringIO, BytesIO
 
 DATE_FORMAT_1='%Y-%m-%d'
 DATE_FORMAT_2='%m.%d.%Y'
@@ -61,7 +61,8 @@ def crawl_news():
     :return: news list
     """
 
-    news = {}
+    # Using collections.OrderedDict to make the dictionary sorted print by myself order
+    news = OrderedDict()
     for pageurl in pageurls:
         url = pageurl['url']
 
@@ -95,7 +96,10 @@ def crawl_news():
         # r.text 是将response回来的数据强制转换成 unicode编码, 如果headers中没有charset设置,则r.text会调用chardet来计算字符集,
         #        这也是消耗CPU的事情！
         # r.content 是返回的是bytes型的原始数据。也就是说，r.content相对于r.text来说节省了计算资源
-        content = response.content.decode(page_encoding)
+        content = response.content
+        content_encoding = requests.utils.get_encodings_from_content(content)
+        content_encoding = content_encoding[0] if content_encoding and len(content_encoding)>0 else 'utf-8'
+        content = content.decode(content_encoding, 'replace')
         htmlparser = etree.HTML(content)
         contents =  htmlparser.xpath(pattern)
 
@@ -249,17 +253,8 @@ def create_markdown_content(news):
                 article_content += tpl_article_content.format(title=c['title'], url=c['url'],
                                                               description=c['description'])
 
-    # for c in news:
-    #     if 'isSummary' in c and c['isSummary']:
-    #         article_top_summary += tpl_article_top_summary.format(summary_title=c['title'], summary_url=c['url'], summary_content=c['description'])
-    #         continue
-    #
-    #     article_content += tpl_article_content.format(title=c['title'], url=c['url'], description=c['description'])
-
-    # article = article_title + article_top_summary+'\n' + article_content
-
     if article_top_summary:
-        article_top_summary = article_top_summary+'\n<p>&nbsp;</p>\n'
+        article_top_summary = article_top_summary+'\n<p>&nbsp;</p>\n\n'
 
     article = article_top_summary+ article_content
     return title, article
