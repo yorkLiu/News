@@ -10,6 +10,7 @@ import random
          pageEncoding: 访问的page 的 encoding是什么，默认是 'utf-8', 如果是其它的，则需要指定，如('gb2312')
          classfication: 文章所属类别 (以后还会添加)
                 - IT 新闻
+                - IT 技术
                 - 架构
                 - 人工智能
                 - PM (产品经理)
@@ -46,9 +47,29 @@ pageurls = [
         'position': {'title': './article[2]/h2/text()', 'description': './article[2]/div[contains(@class,"news-list-content")]', 'url':'', 'date': './time[1]/span/text()'}
     },
     {
-        'url': 'https://www.oschina.net/blog',
+        'url': 'http://weixin.sogou.com/pcindex/pc/pc_5/pc_5.html',
         'type': 'xpath',
         'classfication': 'IT 新闻',
+        'days': 1,
+        'pattern': ".//ul[contains(@class, 'news-list')]/li/div[@class='txt-box']",
+        'position': {'title': './h3/a/text()', 'description': './p/text()', 'url': './h3/a/@href',
+                     'date': './div[contains(@class, "s-p")]/span/@t'},
+        'extra_headers': {'x-requested-with': 'XMLHttpRequest'}
+    },
+    {
+        'url': 'http://zhihu.sogou.com/include/pc/pc/topic/topic2_0.html',
+        'type': 'xpath',
+        'classfication': 'IT 新闻',
+        'days': 1,
+        'pattern': ".//ul[contains(@class, 'news-list')]/li",
+        'position': {'title': './p[@class="tit"]/a/text()', 'description': './div/div[2]/p[2]/a/text()',
+                     'url': '../p[@class="tit"]/a/@href', 'date': '今天'},
+        'extra_headers': {'x-requested-with': 'XMLHttpRequest'}
+    },
+    {
+        'url': 'https://www.oschina.net/blog',
+        'type': 'xpath',
+        'classfication': 'IT 技术',
         'days': 1,
         'pattern': ".//div[@id='topsOfRecommend']/div/div[contains(@class, 'box-aw')]",
         'position': {'title': './header/a/@title', 'description': './section/text()', 'url':'./header/a/@href', 'date': './footer/span[3]/text()'}
@@ -56,7 +77,7 @@ pageurls = [
     {
         'url': 'https://www.oschina.net/news',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 1,
         'pattern': ".//div[@id='all-news']/div/div[contains(@class, 'box-aw')]",
         'position': {'title': './a/span/text()', 'description': './div[contains(@class, "summary")]/text()', 'url':'./a/@href', 'date': './div[contains(@class, "from")]/span/text()'}
@@ -64,7 +85,7 @@ pageurls = [
     {
         'url': 'http://www.51cto.com/',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 1,
         'pageEncoding': 'gb2312',
         'pattern': ".//div[contains(@class, 'home-right')]/div[1]/div[contains(@class,'zd-list')]/ul/li",
@@ -73,7 +94,7 @@ pageurls = [
     {
         'url': 'http://www.51cto.com/',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 1,
         'pageEncoding': 'gb2312',
         'total': 10,
@@ -83,7 +104,7 @@ pageurls = [
     {
         'url': 'https://blog.csdn.net',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 1,
         'total': 15,
         'pattern': ".//ul[contains(@class, 'feedlist_mod')]/li",
@@ -92,7 +113,7 @@ pageurls = [
     {
         'url': 'https://blog.csdn.net/csdnnews',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 2,
         'pattern': ".//div[@class='article-list']/div",
         'position': {'title': './h4/a/text()', 'description': 'p/a/text()', 'url':'./h4/a/@href', 'date': './div/p[1]/span/text()'}
@@ -100,7 +121,7 @@ pageurls = [
     {
         'url': 'https://www.jianshu.com/c/7847442e0728',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 1,
         'pattern': ".//div[@id='list-container']/ul/li",
         'position': {'title': './div/a/text()', 'description': './div/p/text()', 'url': './div/a/@href', 'date': './div/div[@class="author"]/div/span[@class="time"]/@data-shared-at'}
@@ -108,7 +129,7 @@ pageurls = [
     {
         'url': 'http://www.lanjingtmt.com/news',
         'type': 'xpath',
-        'classfication': 'IT 新闻',
+        'classfication': 'IT 技术',
         'days': 1,
         'pattern': ".//div[@class='in-main-l']/dl",
         'position': {'title': './dd/h2/a/text()', 'description': './dd/p[2]/text()', 'url': './dd/h2/a/@href', 'date': './dd/p[@class="msg"]/text()'}
@@ -241,7 +262,8 @@ USER_AGENTS = [
 def get_header():
     return {
         'User-Agent': random.choice(USER_AGENTS),
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        # 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept': '*/*',
         'Accept-Language': 'en-US,en;q=0.5',
         'Connection': 'keep-alive',
         'Accept-Encoding': 'gzip, deflate',

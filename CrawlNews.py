@@ -15,6 +15,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf8")
 
+from io import StringIO, BytesIO
+
 DATE_FORMAT_1='%Y-%m-%d'
 DATE_FORMAT_2='%m.%d.%Y'
 DATE_FORMAT_3='%Y/%m/%d'
@@ -70,7 +72,7 @@ def crawl_news():
         isSummary = 'summary' in pageurl and pageurl['summary'] is True
         classfication = pageurl['classfication']
 
-        page_encoding = pageurl['pageEncoding'].lower() if 'pageEncoding' in pageurl else None
+        page_encoding = pageurl['pageEncoding'].lower() if 'pageEncoding' in pageurl else 'utf-8'
         total_count = pageurl['total'] if 'total' in pageurl else DEFAULT_TOTAL_CRAWL
         pattern = pageurl['pattern']
         position = pageurl['position']
@@ -89,7 +91,12 @@ def crawl_news():
             print 'ERROR: could not visit the URL [%s]' % url
             continue
 
-        htmlparser = etree.HTML(response.text)
+        # r.text 与 r.content 区别
+        # r.text 是将response回来的数据强制转换成 unicode编码, 如果headers中没有charset设置,则r.text会调用chardet来计算字符集,
+        #        这也是消耗CPU的事情！
+        # r.content 是返回的是bytes型的原始数据。也就是说，r.content相对于r.text来说节省了计算资源
+        content = response.content.decode(page_encoding)
+        htmlparser = etree.HTML(content)
         contents =  htmlparser.xpath(pattern)
 
         indx=0
