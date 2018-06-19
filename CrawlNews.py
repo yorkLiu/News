@@ -99,7 +99,7 @@ def crawl_news():
         content = response.content
         content_encoding = requests.utils.get_encodings_from_content(content)
         content_encoding = content_encoding[0] if content_encoding and len(content_encoding)>0 else 'utf-8'
-        content = content.decode(content_encoding, 'replace')
+        content = content.decode(content_encoding, 'ignore')
         htmlparser = etree.HTML(content)
         contents =  htmlparser.xpath(pattern)
 
@@ -148,8 +148,8 @@ def crawl_news():
                     if not (url.startswith('https') or url.startswith('http')):
                         url=rooturl + url
 
-                title = title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else title
-                description = description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else description
+                # title = title.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else title
+                # description = description.encode('latin1', 'ignore').decode(page_encoding, 'ignore') if page_encoding and page_encoding != 'utf-8' else description
 
                 if not isSummary:
                     title = replace_chars(title)
