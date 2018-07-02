@@ -206,6 +206,14 @@ pageurls = [
         'days': 1,
         'pattern': ".//div[@class='news-list']/article/div[@class='news-con']",
         'position': {'title': './h2/a/text()', 'description': './div[@class="des"]/text()', 'url': './h2/a/@href', 'date': './div[@class="author"]/div[@class="avatar-des"]/div/span[@class="time"]/text()'}
+    },
+    {
+        'url': 'http://www.pmleader.cn',
+        'type': 'xpath',
+        'classfication': 'PM',
+        'days': 1,
+        'pattern': ".//ul[contains(@class, 'p2_article')]/li/div[@class='p2_aer']",
+        'position': {'title': './a[1]/text()', 'description': './a[2]/text()', 'url': './a[1]/@href', 'date': './span[contains(@class, "p2_nickname")]/text()'}
     }
 
     # ,
